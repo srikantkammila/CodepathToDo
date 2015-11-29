@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/note_item_height">
+
+    <CheckBox
+        android:id="@+id/noteStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="#4ABFC7"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+
+    <TextView
+        android:id="@+id/noteText"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/note_item_height"
+        android:text="Note"
+        android:singleLine="false"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:maxLength="25"
+        android:textColor="@android:color/black"
+        android:gravity="center_vertical" />
+    <TextView
+        android:id="@+id/noteDate"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/note_item_height"
+        android:text="Date"
+        android:textColor="@android:color/black"
+        android:gravity="center_vertical|right" />
+
+
+</LinearLayout>

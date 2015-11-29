@@ -1,0 +1,44 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#027062</item>
+        <!--<item name="android:background">@drawable/headergd</item>-->
+        <item name="colorPrimaryDark">#02544A</item>
+        <item name="colorAccent">#4ABFC7</item>
+        <item name="android:textColor">@android:color/black</item>
+        <!--<item name="android:actionBarStyle">@style/MyActionBarTheme</item>-->
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Transparent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <!--<item name="android:windowAnimationStyle">@style/Animations.SplashScreen</item>-->
+    </style>
+    <style name="Animations" parent="android:Animation" />
+    <style name="Animations.SplashScreen">
+        <!--<item name="android:windowEnterAnimation">@anim/appear</item>-->
+        <item name="android:windowExitAnimation">@anim/disappear</item>
+        <item name="android:windowEnterAnimation">@anim/zoomin</item>
+    </style>
+
+    <style name="MyCustomTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
+    </style>
+
+    <style name="MyActionBarTheme" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="android:windowBackground">@drawable/headergd</item>
+        <item name="background">@drawable/headergd</item>
+    </style>
+
+</resources>
