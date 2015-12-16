@@ -24,11 +24,55 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
-        android:id="@+id/note_status"
+        android:id="@+id/note_priority"
         android:layout_below="@id/editText">
         <TextView
+            android:id="@+id/note_priority_lbl"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/priority"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentLeft="true"/>
+        <Spinner
+            android:id="@+id/note_priority_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
+        <!--<RadioGroup-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/note_reminder_status_radio"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:weightSum="1"-->
+            <!--android:background="#C8EFFA"-->
+            <!--android:layout_toRightOf="@+id/note_reminder_status_lbl"-->
+            <!--android:layout_below="@id/due_date">-->
+            <!--<RadioButton android:id="@+id/reminder_status_active"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/yes"-->
+                <!--android:layout_weight=".5"/>-->
+            <!--<RadioButton android:id="@+id/reminder_status_inactive"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/no"-->
+                <!--android:layout_weight=".5"/>-->
+        <!--</RadioGroup>-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:id="@+id/note_status"
+        android:layout_below="@id/note_priority">
+        <TextView
             android:id="@+id/note_status_lbl"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/status"
             android:textSize="20dp"
@@ -43,7 +87,7 @@
             android:weightSum="1"
             android:background="#C8EFFA"
             android:layout_toRightOf="@+id/note_status_lbl"
-            android:layout_below="@id/editText">
+            android:layout_below="@id/note_priority">
             <RadioButton android:id="@+id/status_active"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,7 +113,7 @@
         android:layout_below="@id/note_status">
         <TextView
             android:id="@+id/due_date_lbl"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/due_date"
             android:textSize="20dp"
@@ -100,6 +144,44 @@
                 android:src="@drawable/date_range_black_18dp"
                 android:onClick="showDatepicker"/>
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:id="@+id/note_reminder_status"
+        android:layout_below="@id/due_date">
+        <TextView
+            android:id="@+id/note_reminder_status_lbl"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/reminder_status"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentLeft="true"/>
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/note_reminder_status_radio"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="#C8EFFA"
+            android:layout_toRightOf="@+id/note_reminder_status_lbl"
+            android:layout_below="@id/due_date">
+            <RadioButton android:id="@+id/reminder_status_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yes"
+                android:layout_weight=".5"/>
+            <RadioButton android:id="@+id/reminder_status_inactive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no"
+                android:layout_weight=".5"/>
+        </RadioGroup>
     </LinearLayout>
 
 

@@ -10,30 +10,43 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.tryand.R;
 import com.tryand.datastore.Note;
 import com.tryand.datastore.NoteDataSource;
+import com.tryand.notification.RemindItemDueReceiver;
 
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Logger;
 
 public class ItemEditActivity extends AppCompatActivity {
     EditText edt;
     RadioGroup statusRdadioGroup;
     RadioButton activeRd;
     RadioButton doneRd;
+    RadioGroup reminderRadioGroup;
+    RadioButton reminderActive;
+    RadioButton reminderInactive;
+    Spinner prioritySpinner;
+    String[] priorityValues = {"Low", "Medium", "High"};
     Note nt;
     NoteDataSource datasource;
     String operation = "new";
     Calendar myCalendar = Calendar.getInstance();
     EditText dateInput;
     Menu menu;
+    RemindItemDueReceiver reminderRsv = new RemindItemDueReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +56,39 @@ public class ItemEditActivity extends AppCompatActivity {
         statusRdadioGroup = (RadioGroup) findViewById(R.id.note_status_radio);
         activeRd = (RadioButton) findViewById(R.id.status_active);
         doneRd = (RadioButton) findViewById(R.id.status_done);
+        reminderRadioGroup = (RadioGroup) findViewById(R.id.note_reminder_status_radio);
+        reminderActive = (RadioButton) findViewById(R.id.reminder_status_active);
+        reminderInactive = (RadioButton) findViewById(R.id.reminder_status_inactive);
         dateInput = (EditText) findViewById(R.id.date_input);
+        prioritySpinner = (Spinner) findViewById(R.id.note_priority_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(ItemEditActivity.this,
+                android.R.layout.simple_spinner_item, priorityValues);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        prioritySpinner.setAdapter(adapter);
+        prioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                nt.setPriority(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //default low priority
+            }
+        });
+        reminderActive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!(nt.getDueDate() > 0)) {
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(ItemEditActivity.this, "Set a Due Date/Time", duration);
+                    toast.show();
+                    reminderActive.setChecked(false);
+                    reminderInactive.setChecked(true);
+                }
+            }
+        });
         dateInput.setFocusable(false);
         dateInput.setClickable(true);
         try {
@@ -68,6 +113,14 @@ public class ItemEditActivity extends AppCompatActivity {
                 activeRd.setChecked(false);
                 doneRd.setChecked(true);
             }
+            if (nt.isReminderActive()) {
+                reminderActive.setChecked(true);
+                reminderInactive.setChecked(false);
+            } else {
+                reminderInactive.setChecked(true);
+                reminderActive.setChecked(false);
+            }
+            prioritySpinner.setSelection(nt.getPriority());
         } else {
             //New
             setTitle("New");
@@ -76,6 +129,10 @@ public class ItemEditActivity extends AppCompatActivity {
             //default status of new item
             activeRd.setChecked(true);
             doneRd.setChecked(false);
+
+            reminderActive.setChecked(false);
+            reminderInactive.setChecked(true);
+            prioritySpinner.setSelection(0);
         }
         edt.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -90,9 +147,6 @@ public class ItemEditActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
 
             case R.id.action_done:
                 this.addUpdateItem();
@@ -132,17 +186,26 @@ public class ItemEditActivity extends AppCompatActivity {
     public void addUpdateItem() {
         int checkedId = statusRdadioGroup.getCheckedRadioButtonId();
         int status = checkedId == R.id.status_active ? 0 : 1;
+        int reinderCheckedId = reminderRadioGroup.getCheckedRadioButtonId();
+        int reminderStatus = reinderCheckedId == R.id.reminder_status_active ? 0 : 1;
         String noteText = edt.getText().toString();
         if (operation == "edit") {
             // handle edit note
             this.nt.setNoteText(noteText);
             this.nt.setStatus(status);
+            this.nt.setReminderStatus(reminderStatus);
             datasource.updateNote(nt);
         } else {
             //handle create note
             if (noteText != null && noteText.length() > 0) {
-                datasource.createNote(noteText, status, nt.getDueDate(), "");
+                this.nt = datasource.createNote(noteText, status, nt.getDueDate(), "", reminderStatus, nt.getPriority());
             }
+        }
+        if (this.nt.isReminderActive() && this.nt.getDueDate() > 0) {
+            Logger.getLogger("ToDo").info("Reminder for " + this.nt.getDisplayDate());
+            reminderRsv.setAlarm(this, (int)this.nt.getId(), this.nt.getNoteText(), this.nt.getDueDate() - 1 * 60 * 1000);
+        } else {
+            reminderRsv.cancelAlarm(this, (int) this.nt.getId());
         }
         this.finish();
     }
@@ -158,6 +221,9 @@ public class ItemEditActivity extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        if (nt.getDueDate() > 0 && nt.isReminderActive()) {
+                            reminderRsv.cancelAlarm(ItemEditActivity.this, (int)nt.getId());
+                        }
                         datasource.deleteNote(nt);
                         close();
                     }})
@@ -191,6 +257,18 @@ public class ItemEditActivity extends AppCompatActivity {
 
         final View dateTimePicker = View.inflate(this, R.layout.date_time_picker_layout, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+
+        dateTimePicker.findViewById(R.id.date_time_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //reset reminder to inactive
+                reminderInactive.setChecked(true);
+                reminderActive.setChecked(false);
+
+                updateDueDate(0);
+                alertDialog.dismiss();
+            }
+        });
 
         dateTimePicker.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
             @Override

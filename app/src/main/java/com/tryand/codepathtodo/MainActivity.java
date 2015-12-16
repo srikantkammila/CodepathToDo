@@ -2,8 +2,8 @@ package com.tryand.codepathtodo;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.tryand.R;
 import com.tryand.adapter.NoteAdapter;
 import com.tryand.datastore.Note;
 import com.tryand.datastore.NoteDataSource;
@@ -53,11 +54,13 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent editItem = new Intent(MainActivity.this, ItemEditActivity.class);
+//                Intent editItem = new Intent(MainActivity.this, ItemEditActivity.class);
                 Bundle bd = new Bundle();
                 bd.putSerializable("note", (Note) lvItems.getItemAtPosition(position));
-                editItem.putExtra("note_item", bd);
-                startActivity(editItem);
+//                editItem.putExtra("note_item", bd);
+//                startActivity(editItem);
+
+                showEditDialog(bd);
             }
         });
 
@@ -90,13 +93,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
 
             case R.id.action_add:
-                Intent editItem = new Intent(MainActivity.this, ItemEditActivity.class);
-                startActivity(editItem);
+//                Intent editItem = new Intent(MainActivity.this, ItemEditActivity.class);
+//                startActivity(editItem);
+
+                showEditDialog(null);
                 return true;
             case R.id.action_delete:
                 new AlertDialog.Builder(this)
@@ -146,5 +148,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         dataSource.close();
+    }
+
+    private void showEditDialog(Bundle bd) {
+        FragmentManager fm = getSupportFragmentManager();
+        ItemEditDialogFragment editNameDialog = ItemEditDialogFragment.newInstance();
+        if (bd != null) {
+            editNameDialog.setArguments(bd);
+        }
+        editNameDialog.show(fm, "fragment_edit_name");
     }
 }

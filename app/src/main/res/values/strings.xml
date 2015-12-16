@@ -15,4 +15,9 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_done">Done</string>
     <string name="due_date">Due Date</string>
+    <string name="inactive">Inactive</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="reminder_status">Remind?</string>
+    <string name="priority">Priority</string>
 </resources>

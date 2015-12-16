@@ -14,13 +14,15 @@ public class DoNoteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NOTE = "note";
     public static final String COLUMN_NOTE_DUE_DATE = "due_date";
-    public static final String COLUMN_NOTE_STATUS = "status"; //true -> activ, false -> done
+    public static final String COLUMN_NOTE_STATUS = "status"; //true -> active, false -> done
     public static final String COLUMN_NOTE_EXTRA_NOTES = "extra_notes";
+    public static final String COLUMN_NOTE_REMINDER = "reminder_status"; //true -> active, false -> not active
+    public static final String COLUMN_NOTE_PRIORITY = "priority"; //0 -> low, 1 -> medium, 2 -> high
 
 
 
     private static final String DATABASE_NAME = "notes.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 8;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
@@ -29,7 +31,9 @@ public class DoNoteHelper extends SQLiteOpenHelper {
             + " text not null, " + COLUMN_NOTE_STATUS
             + " integer, " + COLUMN_NOTE_DUE_DATE
             + " text, " + COLUMN_NOTE_EXTRA_NOTES
-            + " text);";
+            + " text, " + COLUMN_NOTE_REMINDER
+            + " integer, " + COLUMN_NOTE_PRIORITY
+            + " integer);";
     
     public DoNoteHelper(Context cxt) {
         super(cxt, DATABASE_NAME, null, DATABASE_VERSION);

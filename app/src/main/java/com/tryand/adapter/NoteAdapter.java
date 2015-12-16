@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tryand.codepathtodo.R;
+import com.tryand.R;
 import com.tryand.common.Utils;
 import com.tryand.datastore.Note;
 import com.tryand.datastore.NoteDataSource;
@@ -42,6 +43,7 @@ public class NoteAdapter extends ArrayAdapter<Note> {
         TextView noteText = (TextView) convertView.findViewById(R.id.noteText);
         TextView noteDate = (TextView) convertView.findViewById(R.id.noteDate);
         CheckBox noteStatus = (CheckBox) convertView.findViewById(R.id.noteStatus);
+        ImageView priorityInd = (ImageView) convertView.findViewById(R.id.notePriority);
         // Populate the data into the template view using the data object
 
         noteText.setText(note.getNoteText());
@@ -74,6 +76,15 @@ public class NoteAdapter extends ArrayAdapter<Note> {
 
         noteStatus.setChecked(!note.isActive());
         noteStatus.setTag(note);
+        if (note.getPriority() == 2) {
+            //high priority. Set red background
+            priorityInd.setColorFilter(Color.parseColor("#F5756E"));
+        } else if (note.getPriority() == 1) {
+            //medium priority. Set yellow background
+            priorityInd.setColorFilter(Color.YELLOW);
+        } else {
+            priorityInd.setColorFilter(Color.parseColor("#41D2F2"));
+        }
         return convertView;
     }
 

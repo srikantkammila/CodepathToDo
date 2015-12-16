@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/note_item_height">
 
+
     <CheckBox
         android:id="@+id/noteStatus"
         android:layout_width="wrap_content"
@@ -23,13 +24,24 @@
         android:maxLength="25"
         android:textColor="@android:color/black"
         android:gravity="center_vertical" />
+
     <TextView
         android:id="@+id/noteDate"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/note_item_height"
+        android:paddingRight="15dp"
         android:text="Date"
         android:textColor="@android:color/black"
         android:gravity="center_vertical|right" />
+
+    <ImageView
+        android:id="@+id/notePriority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/priority_indicator"/>
+
 
 
 </LinearLayout>

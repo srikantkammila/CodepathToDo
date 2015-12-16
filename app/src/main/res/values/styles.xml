@@ -41,4 +41,14 @@
         <item name="background">@drawable/headergd</item>
     </style>
 
+    <style name="DialogToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+
+    <style name="MyToolbarTheme" parent="Base.Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:background">?attr/controlBackground</item>
+        <item name="android:minWidth">36dp</item>
+        <item name="android:scaleType">center</item>
+    </style>
+
 </resources>
