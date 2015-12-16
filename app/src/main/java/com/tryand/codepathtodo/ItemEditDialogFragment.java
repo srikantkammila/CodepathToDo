@@ -109,7 +109,7 @@ public class ItemEditDialogFragment extends DialogFragment {
         }
         if (this.nt.isReminderActive() && this.nt.getDueDate() > 0) {
             Logger.getLogger("ToDo").info("Reminder for " + this.nt.getDisplayDate());
-            reminderRsv.setAlarm(getActivity(), (int)this.nt.getId(), this.nt.getNoteText(), this.nt.getDueDate() - 15 * 60 * 1000);
+            reminderRsv.setAlarm(getActivity(), (int)this.nt.getId(), this.nt.getNoteText(), this.nt.getDueDate() - 1 * 60 * 1000);
         } else {
             reminderRsv.cancelAlarm(getActivity(), (int) this.nt.getId());
         }

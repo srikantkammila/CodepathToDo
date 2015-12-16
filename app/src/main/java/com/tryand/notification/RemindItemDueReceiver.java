@@ -16,6 +16,7 @@ public class RemindItemDueReceiver extends WakefulBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent service = new Intent(context, RemindItemDueSchedulingService.class);
+        service.putExtra("note_text", intent.getStringExtra("note_text"));
 
         // Start the service, keeping the device awake while it is launching.
         startWakefulService(context, service);

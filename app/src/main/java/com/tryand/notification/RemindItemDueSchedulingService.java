@@ -27,7 +27,7 @@ public class RemindItemDueSchedulingService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        sendNotification((String)intent.getExtras().get("note_text"));
+        sendNotification(intent.getStringExtra("note_text"));
         // Release the wake lock provided by the BroadcastReceiver.
         RemindItemDueReceiver.completeWakefulIntent(intent);
     }
@@ -44,8 +44,6 @@ public class RemindItemDueSchedulingService extends IntentService {
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.app_icon)
                         .setContentTitle("DoNote")
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(msg))
                         .setContentText(msg)
                         .setAutoCancel(true);
 
