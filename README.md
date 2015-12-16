@@ -37,6 +37,10 @@ Here's a walkthrough of implemented user stories:
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
+Priority of the item is displayed as colored dot. 
+If due date is today, I show time in red clor. If it is any other day, I show date only.
+For the demo video above, I set the reminder to 1 min before the due time.
+
 
 ###Challenges encountered:
     
